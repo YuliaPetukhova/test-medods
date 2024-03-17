@@ -3,6 +3,15 @@
   <div class="table">
     <h1>Создание Клиента</h1>
     <form @submit.prevent="submitForm">
+      <label for="lastName">Фамилия:</label>
+      <input
+          type="text"
+          id="lastName"
+          v-model="formData.lastName"
+          placeholder="Введите фамилию"
+      />
+      <div class="error-message" v-if="v$.lastName.$error">*Поле обязательное для заполнения.</div>
+
       <label for="username">Имя:</label>
       <input
           type="text"
@@ -10,38 +19,34 @@
           v-model="formData.firstName"
           placeholder="Введите имя"
       />
+      <div class="error-message" v-if="v$.firstName.$error">*Поле обязательное для заполнения.</div>
 
-      <label for="usersurname">Фамилия:</label>
+
+      <label for="userPatronymic">Отчество:</label>
       <input
           type="text"
-          id="usersurname"
-          v-model="formData.lastName"
-          placeholder="Введите фамилию"
-      />
-
-      <label for="userpatronymic">Отчество:</label>
-      <input
-          type="text"
-          id="userpatronymic"
+          id="userPatronymic"
           v-model="formData.userPatronymic"
           placeholder="Введите отчество"
       />
 
-      <label for="dateirth">Дата рождения:</label>
+      <label for="dateBirth">Дата рождения:</label>
       <input
           type="text"
-          id="datebirth"
+          id="dateBirth"
           v-model="formData.dateBirth"
           placeholder="Введите дату рождения"
       />
+      <div class="error-message" v-if="v$.dateBirth.$error">*Поле обязательное для заполнения.</div>
 
-      <label for="phonenumber">Номер телефона:</label>
+      <label for="phoneNumber">Номер телефона:</label>
       <input
           type="text"
-          id="phonenumber"
+          id="phoneNumber"
           v-model="formData.phoneNumber"
           placeholder="Введите свой номер телефона"
       />
+      <div class="error-message" v-if="v$.phoneNumber.$error">*Поле обязательное для заполнения.</div>
 
       <div class="sex">
         <label for="sex">Пол:</label>
@@ -54,11 +59,12 @@
       </div>
 
       <label>Группа клиентов</label>
-      <select class="table" id="groups" multiple>
+      <select class="table" id="groups" v-model="formData.groups" multiple>
         <option>VIP</option>
         <option>Проблемные</option>
         <option>ОМС</option>
       </select>
+      <div class="error-message" v-if="v$.groups.$error">*Поле обязательное для заполнения.</div>
 
       <label>Лечащий врач</label>
       <select class="select" id="doctor">
@@ -102,6 +108,7 @@
           v-model="formData.city"
           placeholder="Введите город"
       />
+      <div class="error-message" v-if="v$.city.$error">*Поле обязательное для заполнения.</div>
 
       <label for="street">Улица:</label>
       <input
@@ -127,6 +134,7 @@
         <option>Свидетельство о рождении</option>
         <option>Вод. удостоверение</option>
       </select>
+      <div class="error-message" v-if="v$.typeDocument.$error">*Выберите один из документов</div>
 
       <label for="series">Серия:</label>
       <input
@@ -152,13 +160,14 @@
           placeholder="Введите название организации"
       />
 
-      <label for="issuedate">Дата выдачи*:</label>
+      <label for="issueDate">Дата выдачи*:</label>
       <input
           type="text"
-          id="issuedate"
+          id="issueDate"
           v-model="formData.issueDate"
           placeholder="Введите дату выдачи"
       />
+      <div class="error-message" v-if="v$.issueDate.$error">*Поле обязательное для заполнения.</div>
 
       <button type="submit">Создать</button>
     </form>
@@ -167,7 +176,16 @@
 </template>
 
 <script>
+import {useVuelidate} from '@vuelidate/core'
+import {required} from '@vuelidate/validators'
+
 export default {
+  setup() {
+    return {
+      v$: useVuelidate(),
+      "$error": false,
+    }
+  },
   data() {
     return {
       formData: {
@@ -177,6 +195,7 @@ export default {
         dateBirth: '',
         phoneNumber: '',
         sex: '',
+        groups: '',
         doctor: '',
         checkbox: '',
         index: '',
@@ -185,20 +204,40 @@ export default {
         city: '',
         street: '',
         home: '',
-        typeDocument:'',
-        series:'',
+        typeDocument: '',
+        series: '',
         num: '',
-        issuedBy:'',
+        issuedBy: '',
         issueDate: '',
       }
     };
-  }
-  ,
-  methods: {
-    submitForm() {
-      // Здесь можно добавить логику для отправки данных на сервер
-      console.log('Данные формы:', this.formData);
+  },
+
+  validations() {
+    return {
+      firstName: {required},
+      lastName: {required},
+      dateBirth: {required},
+      phoneNumber: {required},
+      groups: {required},
+      city: {required},
+      typeDocument: {required},
+      issueDate: {required},
     }
+  },
+
+  methods: {
+      async submitForm () {
+        const isFormCorrect = await this.v$.$validate()
+        // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+        if (!isFormCorrect) return
+          console.log('Данные формы:', this.formData);
+      },
+
+    // submitForm() {
+    //   // Здесь можно добавить логику для отправки данных на сервер
+    //   console.log('Данные формы:', this.formData);
+    // }
   }
 
 }
@@ -241,6 +280,11 @@ button {
 
 .select {
   margin-bottom: 10px
+}
+
+.error-message{
+  font-weight: bold;
+  color: red;
 }
 
 @media (max-width: 425px) {
