@@ -1,181 +1,257 @@
-<!--<script setup>-->
+<template>
 
-<!--// import Multiselect from 'vue-multiselect'-->
-<!--// let multiselect = Vue.component('multiselect', Multiselect);-->
-<!--//-->
-<!--// export default {-->
-<!--//-->
-<!--//   components: {Multiselect},-->
-<!--//   groupUsers() {-->
-<!--//     return {-->
-<!--//       form: {-->
-<!--//         value: 'null',-->
-<!--//         options: ['list', 'of', 'options']-->
-<!--//       }-->
-<!--//     }-->
-<!--//   },-->
-<!--//-->
-//   data() {
-//     return {
-//       formData: {
-//         username: '',
-//         usersurname: '',
-//         userpatronymic: '',
-//         datebirth: '',
-//         phonenumber: 1,
-//         sex: '',
-//         doctor: ''
-//       }
-//     };
-//   },
-//   methods: {
-//     submitForm() {
-//       // Здесь можно добавить логику для отправки данных на сервер
-//       console.log('Данные формы:', this.formData);
-//     }
-//   }
-<!--// };-->
+  <div class="table">
+    <h1>Создание Клиента</h1>
+    <form @submit.prevent="submitForm">
+      <label for="username">Имя:</label>
+      <input
+          type="text"
+          id="username"
+          v-model="formData.firstName"
+          placeholder="Введите имя"
+      />
 
+      <label for="usersurname">Фамилия:</label>
+      <input
+          type="text"
+          id="usersurname"
+          v-model="formData.lastName"
+          placeholder="Введите фамилию"
+      />
 
+      <label for="userpatronymic">Отчество:</label>
+      <input
+          type="text"
+          id="userpatronymic"
+          v-model="formData.userPatronymic"
+          placeholder="Введите отчество"
+      />
 
+      <label for="dateirth">Дата рождения:</label>
+      <input
+          type="text"
+          id="datebirth"
+          v-model="formData.dateBirth"
+          placeholder="Введите дату рождения"
+      />
 
-<!--</script>-->
+      <label for="phonenumber">Номер телефона:</label>
+      <input
+          type="text"
+          id="phonenumber"
+          v-model="formData.phoneNumber"
+          placeholder="Введите свой номер телефона"
+      />
 
-<!--<template>-->
-<!--&lt;!&ndash;  <div class="table">&ndash;&gt;-->
-<!--&lt;!&ndash;    <h1>Создание Клиента</h1>&ndash;&gt;-->
-<!--&lt;!&ndash;    <form @submit.prevent="submitForm">&ndash;&gt;-->
-<!--&lt;!&ndash;      <label for="username">Имя:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="username"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.username"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите имя"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+      <div class="sex">
+        <label for="sex">Пол:</label>
 
-<!--&lt;!&ndash;      <label for="usersurname">Фамилия:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="usersurname"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.usersurname"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите фамилию"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+        <input class="check" type="radio" id="m" value="М" v-model="formData.sex"/>
+        <label for="m">М</label>
 
-<!--&lt;!&ndash;      <label for="userpatronymic">Отчество:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="userpatronymic"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.userpatronymic"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите отчество"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+        <input class="check" type="radio" id="f" value="Ж" v-model="formData.sex"/>
+        <label for="f">Ж</label>
+      </div>
 
-<!--&lt;!&ndash;      <label for="dateirth">Дата рождения:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="datebirth"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.datebirth"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите дату рождения"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+      <label>Группа клиентов</label>
+      <select class="table" id="groups" multiple>
+        <option>VIP</option>
+        <option>Проблемные</option>
+        <option>ОМС</option>
+      </select>
 
-<!--&lt;!&ndash;      <label for="phonenumber">Номер телефона:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="phonenumber"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.phonenumber"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите свой номер телефона"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+      <label>Лечащий врач</label>
+      <select class="select" id="doctor">
+        <option>Иванов</option>
+        <option>Захаров</option>
+        <option>Чернышева</option>
+      </select>
 
-<!--&lt;!&ndash;      <label for="sex">Пол:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;      <input&ndash;&gt;-->
-<!--&lt;!&ndash;          type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;          id="sex"&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="formData.sex"&ndash;&gt;-->
-<!--&lt;!&ndash;          placeholder="Введите пол"&ndash;&gt;-->
-<!--&lt;!&ndash;      />&ndash;&gt;-->
+      <input class="check" type="checkbox" id="checkbox" v-model="formData.checkbox">
+      <label for="checkbox">Не отправлять СМС</label>
 
-<!--&lt;!&ndash;      <multiselect v-model="value" :options="options"></multiselect>&ndash;&gt;-->
+      <div>Адрес</div>
+      <label for="index">Индекс:</label>
+      <input
+          type="text"
+          id="index"
+          v-model="formData.index"
+          placeholder="Введите индекс"
+      />
 
-<!--&lt;!&ndash;      <select&ndash;&gt;-->
-<!--&lt;!&ndash;          id="doctor"&ndash;&gt;-->
-<!--&lt;!&ndash;      >&ndash;&gt;-->
-<!--&lt;!&ndash;        <option>Иванов</option>&ndash;&gt;-->
-<!--&lt;!&ndash;        <option>Захаров</option>&ndash;&gt;-->
-<!--&lt;!&ndash;        <option>Чернышева</option>&ndash;&gt;-->
-<!--&lt;!&ndash;      </select>&ndash;&gt;-->
+      <label for="country">Страна:</label>
+      <input
+          type="text"
+          id="country"
+          v-model="formData.country"
+          placeholder="Введите страну"
+      />
 
-<!--&lt;!&ndash;      <button type="submit">Создать</button>&ndash;&gt;-->
-<!--&lt;!&ndash;    </form>&ndash;&gt;-->
-<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+      <label for="region">Область:</label>
+      <input
+          type="text"
+          id="region"
+          v-model="formData.region"
+          placeholder="Введите область"
+      />
 
+      <label for="city">Город*:</label>
+      <input
+          type="text"
+          id="city"
+          v-model="formData.city"
+          placeholder="Введите город"
+      />
 
-<!--  <template>-->
-<!--    <div>-->
-<!--      <h1>Регистрация пользователя</h1>-->
-<!--      <form @submit.prevent="submitForm">-->
-<!--        <label for="username">Имя пользователя:</label>-->
-<!--        <input-->
-<!--            type="text"-->
-<!--            id="username"-->
-<!--            v-model="formData.username"-->
-<!--            placeholder="Введите имя пользователя"-->
-<!--        />-->
+      <label for="street">Улица:</label>
+      <input
+          type="text"
+          id="street"
+          v-model="formData.street"
+          placeholder="Введите улицу"
+      />
 
-<!--        <label for="email">Email:</label>-->
-<!--        <input-->
-<!--            type="email"-->
-<!--            id="email"-->
-<!--            v-model="formData.email"-->
-<!--            placeholder="Введите email"-->
-<!--        />-->
+      <label for="home">Дом:</label>
+      <input
+          type="text"
+          id="home"
+          v-model="formData.home"
+          placeholder="Введите дом"
+      />
 
-<!--        <label for="password">Пароль:</label>-->
-<!--        <input-->
-<!--            type="password"-->
-<!--            id="password"-->
-<!--            v-model="formData.password"-->
-<!--            placeholder="Введите пароль"-->
-<!--        />-->
+      <div>Паспорт:</div>
 
-<!--        <button type="submit">Зарегистрироваться</button>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  </template>-->
+      <label>Тип документа*</label>
+      <select class="select" id="typeDocument">
+        <option>Паспорт</option>
+        <option>Свидетельство о рождении</option>
+        <option>Вод. удостоверение</option>
+      </select>
 
-<!--</template>-->
+      <label for="series">Серия:</label>
+      <input
+          type="text"
+          id="series"
+          v-model="formData.series"
+          placeholder="Введите серию"
+      />
 
+      <label for="num">Номер:</label>
+      <input
+          type="text"
+          id="num"
+          v-model="formData.num"
+          placeholder="Введите номер"
+      />
 
-<!--<style scoped>-->
+      <label for="issuedBy">Кем выдан:</label>
+      <input
+          type="text"
+          id="issuedBy"
+          v-model="formData.issuedBy"
+          placeholder="Введите название организации"
+      />
 
-<!--table, form, h1 {-->
-<!--  display: flex;-->
-<!--  flex-direction: column;-->
-<!--  align-items: center;-->
-<!--}-->
+      <label for="issuedate">Дата выдачи*:</label>
+      <input
+          type="text"
+          id="issuedate"
+          v-model="formData.issueDate"
+          placeholder="Введите дату выдачи"
+      />
 
-<!--input, select {-->
-<!--  width: 400px;-->
-<!--  height: 50px;-->
-<!--}-->
+      <button type="submit">Создать</button>
+    </form>
+  </div>
 
-<!--label {-->
-<!--  padding: 0 1rem;-->
-<!--  font-size: 17px;-->
-<!--}-->
+</template>
 
-<!--button {-->
-<!--  margin-top: 10px;-->
-<!--  font-size: 25px;-->
-<!--}-->
+<script>
+export default {
+  data() {
+    return {
+      formData: {
+        firstName: '',
+        lastName: '',
+        userPatronymic: '',
+        dateBirth: '',
+        phoneNumber: '',
+        sex: '',
+        doctor: '',
+        checkbox: '',
+        index: '',
+        country: '',
+        region: '',
+        city: '',
+        street: '',
+        home: '',
+        typeDocument:'',
+        series:'',
+        num: '',
+        issuedBy:'',
+        issueDate: '',
+      }
+    };
+  }
+  ,
+  methods: {
+    submitForm() {
+      // Здесь можно добавить логику для отправки данных на сервер
+      console.log('Данные формы:', this.formData);
+    }
+  }
 
-<!--@media (max-width: 425px) {-->
+}
+</script>
 
-<!--  input {-->
-<!--    width: 300px;-->
-<!--    height: 50px;-->
-<!--  }-->
-<!--}-->
+<style scoped>
+table, form, h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-<!--@media (min-width: 1024px) {-->
+input, select {
+  width: 60%;
+  height: 50px;
+}
 
-<!--}-->
-<!--</style>-->
+label {
+  padding: 0 1rem;
+  font-size: 17px;
+}
+
+button {
+  margin-top: 10px;
+  font-size: 25px;
+}
+
+.sex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 300px;
+  height: 50px;
+  margin: 5px 0;
+}
+
+.check {
+  height: 20px;
+}
+
+.select {
+  margin-bottom: 10px
+}
+
+@media (max-width: 425px) {
+
+  input {
+    width: 300px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 1024px) {
+}
+
+</style>
