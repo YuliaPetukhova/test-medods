@@ -1,86 +1,137 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div id="app">
-    <header>
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
+    <div class="table">
+      <h1>Создание Клиента</h1>
+      <form @submit.prevent="submitForm">
+        <label for="username">Имя:</label>
+        <input
+            type="text"
+            id="username"
+            v-model="formData.username"
+            placeholder="Введите имя"
+        />
 
-        <nav>
-          <router-link to="/">Home</router-link>
-          <router-link to="/about">About</router-link>
-        </nav>
-      </div>
-    </header>
+        <label for="usersurname">Фамилия:</label>
+        <input
+            type="text"
+            id="usersurname"
+            v-model="formData.usersurname"
+            placeholder="Введите фамилию"
+        />
 
-    <router-view />
+        <label for="userpatronymic">Отчество:</label>
+        <input
+            type="text"
+            id="userpatronymic"
+            v-model="formData.userpatronymic"
+            placeholder="Введите отчество"
+        />
+
+        <label for="dateirth">Дата рождения:</label>
+        <input
+            type="text"
+            id="datebirth"
+            v-model="formData.datebirth"
+            placeholder="Введите дату рождения"
+        />
+
+        <label for="phonenumber">Номер телефона:</label>
+        <input
+            type="text"
+            id="phonenumber"
+            v-model="formData.phonenumber"
+            placeholder="Введите свой номер телефона"
+        />
+
+        <label for="sex">Пол:</label>
+        <input
+            type="text"
+            id="sex"
+            v-model="formData.sex"
+            placeholder="Введите пол"
+        />
+
+        <!--        <multiselect v-model="value" :options="options"></multiselect>-->
+
+        <select
+            id="doctor"
+        >
+          <option>Иванов</option>
+          <option>Захаров</option>
+          <option>Чернышева</option>
+        </select>
+
+        <button type="submit">Создать</button>
+      </form>
+    </div>
   </div>
+
 </template>
 
+<script>
+export default {
+  data()
+  {
+    return {
+      formData: {
+        username: '',
+        usersurname: '',
+        userpatronymic: '',
+        datebirth: '',
+        phonenumber: '',
+        sex: '',
+        doctor: ''
+      }
+    };
+  }
+  ,
+  methods: {
+    submitForm()
+    {
+      // Здесь можно добавить логику для отправки данных на сервер
+      console.log('Данные формы:', this.formData);
+    }
+  }
+
+}
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+table, form, h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+
+input, select {
+  width: 400px;
+  height: 50px;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
+label {
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  font-size: 17px;
 }
 
-nav a:first-of-type {
-  border: 0;
+
+button {
+  margin-top: 10px;
+  font-size: 25px;
+}
+
+
+@media (max-width: 425px) {
+
+  input {
+    width: 300px;
+    height: 50px;
+  }
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
 }
+
 </style>
