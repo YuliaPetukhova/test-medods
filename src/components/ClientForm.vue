@@ -354,9 +354,10 @@ input:not([type='checkbox'], [type='radio']), select {
   height: 50px;
   border-radius: 30px;
   padding: 0 1rem;
-  appearance: none;
-  box-shadow: none;
+  box-shadow: gray;
+  border: solid 1px gray;
   text-decoration: none;
+  outline: none;
 }
 
 label {
@@ -387,7 +388,6 @@ label {
   color: #FFFFFF;
   cursor: pointer;
   display: inline-flex;
-  font-family: CircularStd,sans-serif;
   height: auto;
   justify-content: center;
   line-height: 1.5;
