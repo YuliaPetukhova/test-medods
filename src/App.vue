@@ -1,3 +1,3 @@
 <template>
-  <client-form></client-form>
+  <router-view />
 </template>
